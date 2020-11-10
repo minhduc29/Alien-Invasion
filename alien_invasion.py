@@ -1,6 +1,7 @@
 import sys
-from time import sleep
 import pygame
+import sounds as s
+from time import sleep
 from settings import Settings
 from game_stats import GameStats
 from scoreboard import Scoreboard
@@ -105,6 +106,7 @@ class AlienInvasion:
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
+            s.bullet_sound.play()
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets"""
@@ -128,6 +130,7 @@ class AlienInvasion:
                 self.stats.score += self.settings.alien_points * len(aliens)
             self.sb.prep_score()
             self.sb.check_high_score()
+            s.alien_sound.play()
 
         if not self.aliens:
             # Destroy existing bullets and create new fleet
