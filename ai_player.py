@@ -26,7 +26,7 @@ class AIPlayer:
 
     def _implement_strategy(self):
         """Implement an automated strategy for AI player"""
-        if len(self.ai_game.aliens) >= 1/2 * self.fleet_size:
+        if len(self.ai_game.aliens) >= 1/4 * self.fleet_size:
             self._sweep_right_left()
         else:
             self._move_with_target()
