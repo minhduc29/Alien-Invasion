@@ -11,6 +11,8 @@ class AIPlayer:
         self.ai_game.stats.game_active = True
         pygame.mouse.set_visible(False)
 
+        self.fleet_size = len(self.ai_game.aliens)
+
         while True:
             self.ai_game._check_events()
             self._implement_strategy()
@@ -24,8 +26,23 @@ class AIPlayer:
 
     def _implement_strategy(self):
         """Implement an automated strategy for AI player"""
-        self._sweep_right_left()
+        if len(self.ai_game.aliens) >= 1/2 * self.fleet_size:
+            self._sweep_right_left()
+        else:
+            self._move_with_target()
+
         self.ai_game._fire_bullet()
+
+    def _get_target_alien(self):
+        """Get a specific alien to target"""
+        target_alien = self.ai_game.aliens.sprites()[0]
+        for alien in self.ai_game.aliens.sprites():
+            if alien.rect.y > target_alien.rect.y:
+                target_alien = alien
+            elif alien.rect.x > target_alien.rect.x:
+                target_alien = alien
+
+        return target_alien
 
     def _sweep_right_left(self):
         """Move the ship right and left continuously"""
@@ -40,6 +57,18 @@ class AIPlayer:
         elif ship.moving_left and ship.rect.left < 10:
             ship.moving_left = False
             ship.moving_right = True
+
+    def _move_with_target(self):
+        """Move the ship according to targeted alien"""
+        target_alien = self._get_target_alien()
+
+        ship = self.ai_game.ship
+        if self.ai_game.settings.fleet_direction == 1 and ship.rect.x < target_alien.rect.x + 50:
+            ship.moving_right = True
+            ship.moving_left = False
+        elif self.ai_game.settings.fleet_direction == -1 and ship.rect.x > target_alien.rect.x - 50:
+            ship.moving_right = False
+            ship.moving_left = True
 
 if __name__ == '__main__':
     ai_game = AlienInvasion()
