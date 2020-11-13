@@ -14,7 +14,7 @@ class Scoreboard:
 
         # Font settings for scoring information
         self.text_color = (255, 255, 255)
-        self.font = pygame.font.SysFont(None, 48)
+        self.font = pygame.font.SysFont('agencyfb', 40)
 
         # Prepare the initial score image
         self.prep_score()
